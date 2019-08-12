@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>User.Business</AssemblyName>
+    <RootNamespace>User.Business</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\user.domain\user.domain.csproj" />
+    <ProjectReference Include="..\user.repository\user.repository.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,27 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using User.Business;
 
-namespace User_API.Controllers
+namespace User.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
-        // GET api/values
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public IUserProvider _UserProvider { get; set; }
+
+        public UserController(IUserProvider userProvider)
         {
-            return new string[] { "value1", "value2" };
+            _UserProvider = userProvider;
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        [HttpGet]
+        [Route("{id}")]
+        [ProducesResponseType(typeof(Response<UserViewModel>), 200)]
+        public async Task<IActionResult> Get(string id)
         {
-            return "value";
+            var user = await _UserProvider.GetUser(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var response = new Response<UserViewModel>()
+            {
+                Data = new UserViewModel(user)
+            };
+
+            return Ok(response);
         }
 
         // POST api/values
@@ -40,6 +51,16 @@ namespace User_API.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+    }
+
+    public class UserViewModel
+    {
+        private object user;
+
+        public UserViewModel(Domain.User user)
+        {
+            this.user = user;
         }
     }
 }
