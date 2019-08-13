@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.Azure.Documents;
@@ -8,7 +9,7 @@ namespace User.Repository
 {
     public class UserRepository : IUserRepository
     {
-        private const string DatabaseId = "UserService";
+        private const string DatabaseId = "User";
         private const string CollectionId = "Users";
 
         private readonly IDocumentClient _documentClient;
@@ -43,7 +44,15 @@ namespace User.Repository
             var response = await _documentClient.UpsertDocumentAsync(CollectionUri, user,
                 new RequestOptions { PartitionKey = new PartitionKey(user.Id) });
 
-            return response.StatusCode == HttpStatusCode.OK;
+            return response.StatusCode == HttpStatusCode.Created || response.StatusCode == HttpStatusCode.OK;
+        }
+
+        public async Task<bool> DeleteUser(User.Domain.User user)
+        {
+            var response = await _documentClient.DeleteDocumentAsync(CreateDocumentUri(user.Id),
+                new RequestOptions { PartitionKey = new PartitionKey(user.Id) });
+
+            return response.StatusCode == HttpStatusCode.NoContent;
         }
 
         private Uri CreateDocumentUri(string id)

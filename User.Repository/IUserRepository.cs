@@ -7,5 +7,6 @@ namespace User.Repository
     {
         Task<Domain.User> GetByIdAsync(string id);
         Task<bool> UpsertUser(User.Domain.User user);
+        Task<bool> DeleteUser(User.Domain.User user);
     }
 }

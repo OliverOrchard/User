@@ -35,32 +35,32 @@ namespace User.Api.Controllers
             return Ok(response);
         }
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put(string id, [FromBody]UserViewModel user)
         {
+            var success = await _UserProvider.UpsertUser(Domain.User.Create(user.Id,user.Password,user.Email,user.FirstName,user.Surname));
+
+            if (!success)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
-        }
-    }
+            var success = await _UserProvider.DeleteUser(id);
 
-    public class UserViewModel
-    {
-        private object user;
+            if (!success)
+            {
+                return NotFound();
+            }
 
-        public UserViewModel(Domain.User user)
-        {
-            this.user = user;
+            return NoContent();
         }
     }
 }

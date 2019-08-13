@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using User.Business;
+using User.Repository;
 
 namespace User.Api
 {
@@ -14,6 +15,7 @@ namespace User.Api
             IConfiguration configuration)
         {
             services.AddSingleton<IUserProvider, UserProvider>();
+            services.AddSingleton<IUserRepository, UserRepository>();
 
             return services;
         }
