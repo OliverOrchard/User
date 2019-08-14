@@ -5,6 +5,7 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <RootNamespace>User.Api</RootNamespace>
     <AssemblyName>User.Api</AssemblyName>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,5 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using User.Api.Models;
 using User.Business;
 
 namespace User.Api.Controllers
@@ -8,38 +11,50 @@ namespace User.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        public IUserProvider _UserProvider { get; set; }
+        private readonly IUserProvider _userProvider;
 
         public UserController(IUserProvider userProvider)
         {
-            _UserProvider = userProvider;
+            _userProvider = userProvider;
         }
 
         [HttpGet]
         [Route("{id}")]
-        [ProducesResponseType(typeof(Response<UserViewModel>), 200)]
-        public async Task<IActionResult> Get(string id)
+        [ProducesResponseType(typeof(Response<UserRequestModel>), 200)]
+        public async Task<IActionResult> Get(Guid id)
         {
-            var user = await _UserProvider.GetUser(id);
+            var user = await _userProvider.GetUser(id);
 
             if (user == null)
             {
                 return NotFound();
             }
 
-            var response = new Response<UserViewModel>()
+            var response = new Response<UserRequestModel>()
             {
-                Data = new UserViewModel(user)
+                Data = new UserRequestModel(user)
             };
 
             return Ok(response);
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(string id, [FromBody]UserViewModel user)
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody]UserRequestModel user)
         {
-            var success = await _UserProvider.UpsertUser(Domain.User.Create(user.Id,user.Password,user.Email,user.FirstName,user.Surname));
+            var success = await _userProvider.CreateUser(user.Password, user.Email, user.FirstName, user.Surname);
+
+            if (!success)
+            {
+                return BadRequest();
+            }
+
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(Guid id, [FromBody]UserRequestModel user)
+        {
+            var success = await _userProvider.UpdateUser(id, user.Password,user.Email,user.FirstName,user.Surname);
 
             if (!success)
             {
@@ -49,11 +64,10 @@ namespace User.Api.Controllers
             return NoContent();
         }
 
-        // DELETE api/values/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            var success = await _UserProvider.DeleteUser(id);
+            var success = await _userProvider.DeleteUser(id);
 
             if (!success)
             {

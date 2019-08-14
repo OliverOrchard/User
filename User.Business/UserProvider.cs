@@ -12,24 +12,30 @@ namespace User.Business
 
         public UserProvider(IUserRepository userRepository) => _userRepository = userRepository;
 
-        public async Task<Domain.User> GetUser(string id)
+        public async Task<Domain.User> GetUser(Guid id)
         {
-            return await _userRepository.GetByIdAsync(id);
+            return await _userRepository.GetByIdAsync(id.ToString());
         }
 
-        public async Task<bool> UpsertUser(Domain.User user)
+        public async Task<bool> UpdateUser(Guid id, string password, string email, string firstName, string surname)
         {
-            var existingUser = await _userRepository.GetByIdAsync(user.Id);
+            var existingUser = await _userRepository.GetByIdAsync(id.ToString());
             if (existingUser == null)
             {
-                return await _userRepository.UpsertUser(user);
+                return false;
             }
 
-            existingUser.Update(user);
+            existingUser.Update(password,email,firstName,surname);
             return await _userRepository.UpsertUser(existingUser);
         }
 
-        public async Task<bool> DeleteUser(string id)
+        public async Task<bool> CreateUser(string password, string email, string firstName, string surname)
+        {
+            var user = Domain.User.Create(Guid.NewGuid().ToString(), password, email, firstName, surname);
+            return await _userRepository.UpsertUser(user);
+        }
+
+        public async Task<bool> DeleteUser(Guid id)
         {
             var user = await GetUser(id);
 

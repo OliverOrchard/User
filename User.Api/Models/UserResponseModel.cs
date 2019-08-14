@@ -1,6 +1,6 @@
-﻿namespace User.Api.Controllers
+﻿namespace User.Api.Models
 {
-    public class UserViewModel
+    public class UserResponseModel
     {
         public string Id { get; set; }
         public string FirstName { get; set; }
@@ -8,8 +8,8 @@
         public string Email { get; set; }        
         public string Password { get; set; }
 
-        public UserViewModel(){}
-        public UserViewModel(Domain.User user)
+        public UserResponseModel(){}
+        public UserResponseModel(Domain.User user)
         {
             Id = user.Id;
             FirstName = user.FirstName;
