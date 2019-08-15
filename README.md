@@ -64,7 +64,7 @@ COPY --from=publish /app .
 ENTRYPOINT ["dotnet", "User.Api.dll"]
 ```
 And my docker-compose.yml file:
-```
+``` yml
 version: '3.4'
 
 services:
