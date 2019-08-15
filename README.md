@@ -95,6 +95,15 @@ The cosmos db would just need hosting on azure and have a collection for users.�
 I have built the api to asynchronous this will already help with performance. We could also look at the partition keys in cosmos db. Logical partitions have an upper size limit of 10GB, Request units per second (RU/s) are shared across partitions. Multiple requests to the same partition cannot exceed the allocated throughput for the partition.
 If the performance hit of cross partition queries is troublesome, then it is possible to mitigate this with the use of lookup collections. These are collections that duplicate data in the main collection to facilitate querying by a different partition key.
 
+**Continue operating in the event of problems reading and writing from the database; **
+
+We could use a library such as https://github.com/App-vNext/Polly 
+To create policies in the webapi so that when we make requests to cosmos db we have various around retries. If the service is down we should consider returning informative response types and potentially messages to the consumer of the api .This could be used by the consumer of the application to implement the appropriate ux.
+
+**Ensure the security of the user information.**
+
+We should ensure we do not have any Insecure Direct Object References exposed via the api. We should also ensure that user passwords are appropriately encrypted. Using the latest hashing functions. We should make sure we use a hashing function such as PBKDF2 . As we want CPU-intensive hash function to help prevent brute forcing of passwords. We should also use an iteration count which should be stored in the database with the salt and hash. We should also use tokens when logging in which can be authorised in the api. We could use the token to determine the permissions in the api. For further security we could consider penetration testing the api.
+
 **References**
 
 1. Microsoft Docs. 2019. Choosing a partition key. https://docs.microsoft.com/en-us/azure/cosmos-db/partitioning-overview#choose-partitionkey 
