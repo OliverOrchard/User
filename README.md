@@ -95,7 +95,7 @@ The cosmos db would just need hosting on azure and have a collection for users.�
 I have built the api to asynchronous this will already help with performance. We could also look at the partition keys in cosmos db. Logical partitions have an upper size limit of 10GB, Request units per second (RU/s) are shared across partitions. Multiple requests to the same partition cannot exceed the allocated throughput for the partition.
 If the performance hit of cross partition queries is troublesome, then it is possible to mitigate this with the use of lookup collections. These are collections that duplicate data in the main collection to facilitate querying by a different partition key.
 
-**Continue operating in the event of problems reading and writing from the database; **
+**Continue operating in the event of problems reading and writing from the database**
 
 We could use a library such as https://github.com/App-vNext/Polly 
 To create policies in the webapi so that when we make requests to cosmos db we have various around retries. If the service is down we should consider returning informative response types and potentially messages to the consumer of the api .This could be used by the consumer of the application to implement the appropriate ux.
