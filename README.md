@@ -20,6 +20,7 @@ https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator#installation
   * Throughput: 10000
 ```
 7. Press ok
+
 You now have set up the database and collection that the user service will use.
 Please follow these next steps to get the project running locally
 
