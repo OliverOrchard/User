@@ -4,11 +4,39 @@ Restful API for creating, updating and retrieving user information.
 Welcome to my project I have used cosmos db with a dotnetcore web api.
 I have added the unit tests as asked
 
-I hadn't before but have had a good attempt to try to get it working.
-Wasn't able to find any good guides to get docker yaml working with cosmos-db.
+**Set up**
 
-However I Successfully created dockerfile for my project minus cosmos db aswell as a compose file which will build the file.
+1)Please follow this link, download and install the emulator
+https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator#installation
+2)Launch the emulator
+3)Once launched the explorer should start (if not you can right click the icon in the system tray and click open data explorer...)
+4)Click explorer
+5)Click the new collection button
+6)Fill in form (please note the names are case sensitive)
+```
+  * Database id: User
+  * Collection id: Users
+  * Partition key: /id
+  * Throughput: 10000
+```
+7)Press ok
+You now have set up the database and collection that the user service will use.
+Please follow these next steps to get the project running locally
+
+1)Download the repo
+2)Open the project in visual studio
+3)Restore the nuget packages
+4)Build and run the project using IISExpress
+
+The website will now be launched this will load the swagger ui from where you can make requests to the user api.
+(Please note the website my launch with /)
+
+**Task 2**
+I have not used docker before but I have have had a good attempt to try to get it working.
+Wasn't able to find any good guides to get docker yaml working with cosmos-db.
+However I did successfully create a dockerfile for my project minus cosmos db aswell as a compose file which will build the file.
 I have not included these in the repo however as it breaks the connection to cosmosdb.
+But have icluded them below to give you an idea of how it would have worked.
 
 Please see my Dockerfile
 ``` dockerfile
