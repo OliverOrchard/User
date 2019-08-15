@@ -32,6 +32,7 @@ Please follow these next steps to get the project running locally
 The website will now be launched this will load the swagger ui from where you can make requests to the user api.
 
 **Task 2**
+
 I have not used docker before but I have had a good attempt to get it working.
 Wasn’t able to find any good guides to get docker yaml working with cosmos-db.
 However, I did successfully create a dockerfile for my project minus cosmos db and a compose file which will build the file.
