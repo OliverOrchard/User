@@ -78,3 +78,25 @@ services:
     container_name: cosmosdb-emulator
     restart: on-failure    
 ```
+
+**Task 3**
+Answer to questions in task 3:
+
+**Be deployed to a live environment**
+
+This application could be deployed using Teamcity and Octopus deploy.
+Teamcity could reference the github repo and be used to build changes and run unit tests.
+Then another build could be set up on Teamcity to take the successful builds and create a release in octopus deploy that would be automatically deployed to azure vm.
+Transformations could be used in Octopus deploy that would create the correct references to the hosted cosmo db.
+The cosmos db would just need hosting on azure and have a collection for users.﻿
+
+**Handle a large volume of requests, including concurrent creation and update operations**
+
+I have built the api to asynchronous this will already help with performance. We could also look at the partition keys in cosmos db. Logical partitions have an upper size limit of 10GB, Request units per second (RU/s) are shared across partitions. Multiple requests to the same partition cannot exceed the allocated throughput for the partition.
+If the performance hit of cross partition queries is troublesome, then it is possible to mitigate this with the use of lookup collections. These are collections that duplicate data in the main collection to facilitate querying by a different partition key.
+
+**References**
+
+1. Microsoft Docs. 2019. Choosing a partition key. https://docs.microsoft.com/en-us/azure/cosmos-db/partitioning-overview#choose-partitionkey 
+2. Microsoft Azure Blog. 2018. Azure Cosmos DB partitioning design patterns – Part 1. https://azure.microsoft.com/en-us/blog/azure-cosmos-db-partitioning-design-patterns-part-1/ 
+3. Microsoft Docs. 2018. Change feed in Azure Cosmos DB - overview. https://docs.microsoft.com/en-us/azure/cosmos-db/change-feed
