@@ -30,14 +30,11 @@ Please follow these next steps to get the project running locally
 4. Build and run the project using IISExpress
 
 The website will now be launched this will load the swagger ui from where you can make requests to the user api.
-(Please note the website my launch with /)
 
 **Task 2**
-I have not used docker before but I have have had a good attempt to try to get it working.
-Wasn't able to find any good guides to get docker yaml working with cosmos-db.
-However I did successfully create a dockerfile for my project minus cosmos db aswell as a compose file which will build the file.
-I have not included these in the repo however as it breaks the connection to cosmosdb.
-But have icluded them below to give you an idea of how it would have worked.
+I have not used docker before but I have had a good attempt to get it working.
+Wasn’t able to find any good guides to get docker yaml working with cosmos-db.
+However, I did successfully create a dockerfile for my project minus cosmos db and a compose file which will build the file.
 
 Please see my Dockerfile
 ``` dockerfile
