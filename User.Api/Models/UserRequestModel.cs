@@ -13,6 +13,7 @@ namespace User.Api.Models
         [MinLength(7), Required]
         public string Password { get; set; }
 
+        public UserRequestModel(){}
         public UserRequestModel(Domain.User user)
         {
             FirstName = user.FirstName;
